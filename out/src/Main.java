@@ -1,13 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Arc2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args){
-        JFrame jFrame = getFrame();
-        jFrame.add(new TrafficLight());
+        JFrame jTrafficFrame = getFrame();
+        jTrafficFrame.add(new TrafficLight());
+        JFrame jSnowmanFrame = getFrame();
+        jSnowmanFrame.add(new Snowman());
     }
     static JFrame getFrame(){
         JFrame jFrame = new JFrame();
@@ -20,6 +24,51 @@ public class Main {
                 500,
                 300);
         return jFrame;
+    }
+
+    static class Snowman extends JComponent{
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;
+            int x = 100, x1 = 400, y = 20, w=80, h=50;
+            //head
+            g.drawOval(x1 / 2 - 5, y + (h * 2 / 3), w + 10, (int) (h*1.7));
+            int faceY = (int) (y + (1.6 * h));
+            int faceX = x1 / 2 + w / 2;
+            //eyes
+            g.drawOval(faceX - 5, faceY - 15, 7, 7);
+            g.drawOval(faceX + 20, faceY - 15, 7, 7);
+            //nose
+            g.drawPolygon(new int[]{faceX + 15, faceX + 10, faceX + w + 8},
+                    new int[]{faceY - 7 + w/4, faceY - w / 3 + w/4, (int) (faceY - h + (w*0.5))},
+                    3);
+            //torso
+            int h1 = (int)2.75*h, w1 = 45;
+            g.drawOval(x1 / 2 - w1/2, y + h1, w + w1, h1);
+            int handW = 3, handH = 10;
+            g.drawPolygon(new int[]{x, x + handW, (int) (x1 - 2.5 * w), (int) (x1 - 2.5 * w + handW)},
+                    new int[]{y + h1 - handH, y + h1, y + h1 + h1 / 2, y + h1 + h1 / 2 - handH}, 4);
+            g.drawPolygon(new int[]{(int) (x + 2.5 * w), (int) (x + 2.5 * w + handW), (int) (x1) -10, (int) (x1 + handW - 10)},
+                    new int[]{y + h1 + h1 / 2, y + h1 + h1 / 2 - handH, y + h1 - handH, y + h1}, 4);
+//            int fingerW = 8, fingerH = 9;
+//            g.drawPolygon(new int[]{x + 3, x + 3 + fingerW, x+fingerW+4, x + 4 + fingerW + fingerW},
+//                    new int[]{y + h1 - fingerH, y,y, y + h1}, 4);
+            //bottom
+            int h2 = 3*h, w2 = 60;
+            g.drawOval(x1 / 2 - w2/2, y + h2, w + w2, h2);
+            //hat
+            g.drawRoundRect(x1 / 2, y, w, h, 10, 10);
+            g.setColor(Color.white);
+            g.fillOval(x1/ 2 - 14, y + h - 5, w + 28, h / 3);
+            g.setColor(Color.black);
+            g.drawOval(x1/ 2 - 14, y + h - 5, w + 28, h / 3);
+            RoundRectangle2D rect = new RoundRectangle2D.Double(x1 / 2, y + (h * 2) / 3, w, h / 3, 1, 10);
+            g2.setPaint(Color.white);
+            g2.fill(rect);
+            g2.setPaint(Color.black);
+            g2.draw(rect);
+            super.paintComponent(g);
+        }
     }
     static class TrafficLight extends JComponent {
         @Override
