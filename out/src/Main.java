@@ -30,44 +30,43 @@ public class Main {
     static class Snowman extends JComponent{
         @Override
         protected void paintComponent(Graphics g) {
+            ArrayList<Shape> toColour = new ArrayList<>();
             Graphics2D g2 = (Graphics2D)g;
             int x = 100, x1 = 400, y = 20, w=80, h=50;
             //head
-            g.drawOval(x1 / 2 - 5, y + (h * 2 / 3), w + 10, (int) (h*1.7));
+            toColour.add(new Arc2D.Float(x1/2-5, y+(h*2/3), w+10,h*1.7f, 0, 360, Arc2D.OPEN));
+            toColour.add(new Arc2D.Float(x1 / 2 - 5, y + (h * 2 / 3), w + 10, (int) (h*1.7), 0, 360, Arc2D.OPEN));
             int faceY = (int) (y + (1.6 * h));
             int faceX = x1 / 2 + w / 2;
             //eyes
-            g.drawOval(faceX - 5, faceY - 15, 7, 7);
-            g.drawOval(faceX + 20, faceY - 15, 7, 7);
+            toColour.add(new Arc2D.Float(faceX - 5, faceY - 15, 7, 7, 0, 360, Arc2D.OPEN));
+            toColour.add(new Arc2D.Float(faceX + 20, faceY - 15, 7, 7, 0, 360, Arc2D.OPEN));
             //nose
-            g.drawPolygon(new int[]{faceX + 15, faceX + 10, faceX + w + 8},
+            toColour.add(new Polygon(new int[]{faceX + 15, faceX + 10, faceX + w + 8},
                     new int[]{faceY - 7 + w/4, faceY - w / 3 + w/4, (int) (faceY - h + (w*0.5))},
-                    3);
+                            3));
             //torso
             int h1 = (int)2.75*h, w1 = 45;
-            g.drawOval(x1 / 2 - w1/2, y + h1, w + w1, h1);
+            toColour.add(new Arc2D.Float(x1 / 2 - w1/2, y + h1, w + w1, h1, 0, 360, Arc2D.OPEN));
             int handW = 3, handH = 10;
-            g.drawPolygon(new int[]{x, x + handW, (int) (x1 - 2.5 * w), (int) (x1 - 2.5 * w + handW)},
-                    new int[]{y + h1 - handH, y + h1, y + h1 + h1 / 2, y + h1 + h1 / 2 - handH}, 4);
-            g.drawPolygon(new int[]{(int) (x + 2.5 * w), (int) (x + 2.5 * w + handW), (int) (x1) -10, (int) (x1 + handW - 10)},
-                    new int[]{y + h1 + h1 / 2, y + h1 + h1 / 2 - handH, y + h1 - handH, y + h1}, 4);
-//            int fingerW = 8, fingerH = 9;
-//            g.drawPolygon(new int[]{x + 3, x + 3 + fingerW, x+fingerW+4, x + 4 + fingerW + fingerW},
-//                    new int[]{y + h1 - fingerH, y,y, y + h1}, 4);
+            toColour.add(new Polygon(new int[]{x, x + handW, (int) (x1 - 2.5 * w), (int) (x1 - 2.5 * w + handW)},
+                    new int[]{y + h1 - handH, y + h1, y + h1 + h1 / 2, y + h1 + h1 / 2 - handH}, 4));
+            toColour.add(new Polygon(new int[]{(int) (x + 2.5 * w), (int) (x + 2.5 * w + handW), x1 -10, x1 + handW - 10},
+                    new int[]{y + h1 + h1 / 2, y + h1 + h1 / 2 - handH, y + h1 - handH, y + h1}, 4));
             //bottom
             int h2 = 3*h, w2 = 60;
-            g.drawOval(x1 / 2 - w2/2, y + h2, w + w2, h2);
+            toColour.add(new Arc2D.Float(x1 / 2 - w2/2, y + h2, w + w2, h2, 0, 360, Arc2D.OPEN));
             //hat
-            g.drawRoundRect(x1 / 2, y, w, h, 10, 10);
-            g.setColor(Color.white);
-            g.fillOval(x1/ 2 - 14, y + h - 5, w + 28, h / 3);
-            g.setColor(Color.black);
-            g.drawOval(x1/ 2 - 14, y + h - 5, w + 28, h / 3);
-            RoundRectangle2D rect = new RoundRectangle2D.Double(x1 / 2, y + (h * 2) / 3, w, h / 3, 1, 10);
-            g2.setPaint(Color.white);
-            g2.fill(rect);
-            g2.setPaint(Color.black);
-            g2.draw(rect);
+            toColour.add(new RoundRectangle2D.Float(x1 / 2, y, w, h, 10, 10));
+            toColour.add(new Arc2D.Float(x1/ 2 - 14, y + h - 5, w + 28, h / 3, 0, 360, Arc2D.OPEN));
+            toColour.add(new RoundRectangle2D.Float(x1 / 2, y + (h * 2) / 3, w, h / 3, 1, 10));
+            for (var shape:
+                 toColour) {
+                g2.setColor(Color.white);
+                g2.fill(shape);
+                g2.setColor(Color.black);
+                g2.draw(shape);
+            }
             super.paintComponent(g);
         }
     }
