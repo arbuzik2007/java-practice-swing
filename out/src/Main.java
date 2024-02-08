@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -73,63 +74,69 @@ public class Main {
     static class TrafficLight extends JComponent {
         @Override
         protected void paintComponent(Graphics g) {
-            g.setColor(Color.darkGray);
-            Graphics2D g2 = (Graphics2D) g;
-
+            ArrayList<Shape> toColour = new ArrayList<>();
             int x = 100, y = 100, w = 105, h = 50;
             Arc2D circle = new Arc2D.Double(x, y, w, h, 180, -180, Arc2D.OPEN);
-            g2.fill(circle);
+            toColour.add(circle);
             //body
-            g2.fillRoundRect(x - 10,
+            toColour.add(new RoundRectangle2D.Float(x - 10,
                     y + h - 15,
                     w + 20,
                     325,
                     10,
-                    10);
-            g2.fillRoundRect(x + w / 4,
-                    y + h + 325 - 10,
-                    w / 2,
-                    w - 10,
-                    5,
-                    5);
+                    10));
+            //bottom part
+            toColour.add(new RoundRectangle2D.Float((x + w + 20) / 2 + 10,
+                    y + h + 325,
+                    (w + 20) / 2,
+                    40,
+                    10,
+                    10));
             //left side wings
             int x1 = 30, y1 = y + 300 / 3 - 45;
             int w1 = 50, h1 = 10;
             int w2 = 10, h2 = 50;
-            g.fillRoundRect(x1, y1, w1, h1, 10, 10);
-            g.fillRoundRect(x1 + h2 - w2, y1, w2, h2, 10, 10);
-            g.fillPolygon(new int[]{x1, x1 + w1 - 5, x1 + w1 - 7},
+            toColour.add(new RoundRectangle2D.Float(x1, y1, w1, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Float(x1 + h2 - w2, y1, w2, h2, 10, 10));
+            toColour.add(new Polygon(new int[]{x1, x1 + w1 - 5, x1 + w1 - 7},
                     new int[]{y1 + 7, y1 + w2 / 2, y1 + h2},
-                    3);
+                    3));
             int x2 = 30, y2 = y1 + 300 / 3;
-            g.fillRoundRect(x2, y2, w1, h1, 10, 10);
-            g.fillRoundRect(x2 + h2 - w2, y2, w2, h2, 10, 10);
-            g.fillPolygon(new int[]{x2, x2 + w1 - 5, x2 + w1 - 7},
+            toColour.add(new RoundRectangle2D.Double(x2, y2, w1, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Double(x2 + h2 - w2, y2, w2, h2, 10, 10));
+            toColour.add(new Polygon(new int[]{x2, x2 + w1 - 5, x2 + w1 - 7},
                     new int[]{y2 + 7, y2 + w2 / 2, y2 + h2},
-                    3);
+                    3));
             int y3 = y2 + 300 / 3;
-            g.fillRoundRect(x2, y3, w1, h1, 10, 10);
-            g.fillRoundRect(x2 + h2 - w2, y3, w2, h2, 10, 10);
-            g.fillPolygon(new int[]{x2, x2 + w1 - 5, x2 + w1 - 7},
+            toColour.add(new RoundRectangle2D.Double(x2, y3, w1, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Double(x2 + h2 - w2, y3, w2, h2, 10, 10));
+            toColour.add(new Polygon(new int[]{x2, x2 + w1 - 5, x2 + w1 - 7},
                     new int[]{y3 + 7, y3 + w2 / 2, y3 + h2},
-                    3);
+                    3));
             //right side wings
             int x3 = x2 + w + w - 7;
-            g.fillRoundRect(x3 - 7, y3, w1 + 7, h1, 10, 10);
-            g.fillRoundRect(x3 - 7, y3, w2, h2 - 1, 10, 10);
-            g.fillPolygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y3, w1 + 7, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y3, w2, h2 - 1, 10, 10));
+            toColour.add(new Polygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
                     new int[]{y3 + 7, y3 + w2 / 2, y3 + h2},
-                    3);
-            g.fillRoundRect(x3 - 7, y2, w1 + 7, h1, 10, 10);
-            g.fillRoundRect(x3 - 7, y2, w2, h2 - 1, 10, 10);
-            g.fillPolygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
+                    3));
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y2, w1 + 7, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y2, w2, h2 - 1, 10, 10));
+            toColour.add(new Polygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
                     new int[]{y2 + 7, y2 + w2 / 2, y2 + h2},
-                    3);
-            g.fillRoundRect(x3 - 7, y1, w1 + 7, h1, 10, 10);
-            g.fillRoundRect(x3 - 7, y1, w2, h2 - 1, 10, 10);
-            g.fillPolygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
+                    3));
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y1, w1 + 7, h1, 10, 10));
+            toColour.add(new RoundRectangle2D.Double(x3 - 7, y1, w2, h2 - 1, 10, 10));
+            toColour.add(new Polygon(new int[]{x3 + w1, x3 - 5, x3 - 3},
                     new int[]{y1 + 7, y1 + w2 / 2, y1 + h2},
-                    3);
+                    3));
+
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setColor(Color.darkGray);
+            for (var shape:
+                 toColour) {
+                g2.fill(shape);
+            }
             //light lids
             double r1 = 1.85 * w1, r2 = 1.7 * w1;
             g.setColor(Color.white);
